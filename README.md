@@ -7,10 +7,15 @@ This problem set will cover:
 • Converting a real-life image to a painting and overlaying the sketch to produce a cartoon.
 
 1.1 Useful Functions
+
 • CreateMat(): Creates a matrix header and allocates the matrix data.
+
 • Smooth(): Smooths the image in one of several ways.
+
 • Threshold(): Applies a fixed-level threshold to array elements.
+
 • Laplace():Calculates the Laplacian of an image.
+
 • CvtColor(): Converts the input image from one color space to another.
 
 
