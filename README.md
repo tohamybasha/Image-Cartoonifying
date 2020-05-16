@@ -12,6 +12,8 @@ This problem set will cover:
 • Threshold(): Applies a fixed-level threshold to array elements.
 • Laplace():Calculates the Laplacian of an image.
 • CvtColor(): Converts the input image from one color space to another.
+
+
 2 Generating a black-and-white sketch
 To obtain a sketch (black-and-white drawing) of the image, we will use an edge-detection filter,
 whereas to obtain a color painting, we will use an edge-preserving filter (bilateral filter) to
@@ -26,20 +28,28 @@ random noise in the image.
 Nevertheless, we still need to reduce the noise in the image before we use a Laplacian edge
 filter. We will use a Median filter because it is good at removing noise while keeping edges
 sharp.
+
+
 2.1 Noise Reduction Using Median Filter
 Since Laplacian filters use grayscale images, we must convert from OpenCV’s default BGR
 format to Grayscale, this could be easily done using the CvtColor() function in OpenCV.
 For noise reduction, we apply a Median filter with a 7 7 square aperture. This could be
 done using the Smooth() function.
+
 2.2 Edge Detection Using Laplacian Filter
 After noise reduction, a Laplacian filter of aperture size = 5 is used for edge detection.
 The Laplacian filter produces edges with varying brightness, so to make the edges look more like a sketch we apply a binary threshold to make the edges either white or black. This could be done using Threshold() OpenCV function with threshold value = 125.
+
 3 Generating a color painting and a cartoon
+
 A strong bilateral filter smooths flat regions while keeping edges sharp, and is therefore great as an automatic cartoonifier or painting filter, except that it is extremely slow (that is, measured in seconds or even minutes rather than milliseconds!). We will therefore use some tricks to obtain a nice cartoonifier that still runs at an acceptable speed. The most important trick we can use is to perform bilateral filtering at a lower resolution. It will have a similar effect as at full resolution. This could be done using Resize() function for resizing the image and then applying the bilateral filter using the Smooth() function.
 Rather than applying a large bilateral filter, we will apply many small bilateral filters to produce a strong cartoon effect in less time. We will truncate the filter so that instead of performing a whole filter (for example, a filter size of 21 x 21), it just uses the minimum filter size needed for a convincing result (for example, with a filter size of just 9 x 9).
-We have four parameters that control the bilateral filter: color strength, positional strength, size, and repetition count. Suitable values for these parameters are:
+We have four parameters that control the bilateral filter: color strength, positional strength, size, and repetition count.
+
+Suitable values for these parameters are:
 • Color strength: 9
 • Positional strength: 7
 • Size: 9
 • Repetition count: 7
+
 Then we can overlay the edge mask that we found earlier. To overlay the edge mask “sketch” onto the bilateral filter “painting”, we can start with a black background and copy the “painting” pixels that aren’t edges in the “sketch” mask. This could also be done using the And() OpenCV function.
